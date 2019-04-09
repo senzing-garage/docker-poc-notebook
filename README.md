@@ -113,28 +113,29 @@ Non-Senzing configuration can be seen at
 1. Option #3 - Run the docker container with database and volumes.  Example:
 
     ```console
-    export DATABASE_PROTOCOL=mysql
-    export DATABASE_USERNAME=root
-    export DATABASE_PASSWORD=root
-    export DATABASE_HOST=senzing-mysql
-    export DATABASE_PORT=3306
+    export DATABASE_PROTOCOL=db2
+    export DATABASE_USERNAME=g2admin
+    export DATABASE_PASSWORD=admin1
+    export DATABASE_HOST=172.16.183.158
+    export DATABASE_PORT=50000
     export DATABASE_DATABASE=G2
     export WEBAPP_PORT=8888
 
     export SENZING_DATABASE_URL="${DATABASE_PROTOCOL}://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_DATABASE}"
-    export SENZING_DIR=/opt/senzing
+    export SENZING_TGZ_PATH=~/Downloads
     export SHARED_DIR=$(pwd)
 
     sudo docker run \
       --env SENZING_DATABASE_URL="${SENZING_DATABASE_URL}" \
       --interactive \
-      --name senzing-jupyter \
+      --name senzing-poc-notebook \
       --publish ${WEBAPP_PORT}:8888 \
       --rm \
       --tty \
       --volume ${SHARED_DIR}:/notebooks/shared \
-      --volume ${SENZING_DIR}:/opt/senzing \
-      senzing/jupyter
+      --volume ${SENZING_TGZ_PATH}:/artifacts  \
+      senzing/poc-notebook \
+        start.sh jupyter notebook --NotebookApp.token=''
     ```
 
 1. Option #4 - Run the docker container accessing a database in a docker network. Example:

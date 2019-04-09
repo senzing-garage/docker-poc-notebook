@@ -4,9 +4,9 @@
 ARG BASE_IMAGE=jupyter/minimal-notebook
 FROM ${BASE_IMAGE}
 
-ENV REFRESHED_AT=2019-02-18
+ENV REFRESHED_AT=2019-04-09
 
-LABEL Name="senzing/jupyter" \
+LABEL Name="senzing/poc-notebook" \
       Version="1.0.0"
 
 #############################################
@@ -98,13 +98,12 @@ RUN npm i -g npm
 ## Prepare user home dir
 #############################################
 
-# Copy and expand Senzing_API.tgz
-
-ADD artifacts/Senzing_API.tgz /opt/senzing
-
 # Copy files from repository.
 
+env BOB=8
+
 COPY ./rootfs /
+COPY ./downloads /downloads
 COPY ./notebooks /notebooks
 VOLUME /notebooks/shared
 
@@ -112,6 +111,8 @@ VOLUME /notebooks/shared
 
 RUN chown -R $NB_UID:$NB_GID /notebooks
 RUN chmod -R ug+rw /notebooks
+RUN chown -R $NB_UID:$NB_GID /downloads
+RUN chmod -R ug+rw /downloads
 RUN chown -R $NB_UID:$NB_GID /home/$NB_USER
 RUN chmod -R ug+rw /home/$NB_USER
 
@@ -124,9 +125,10 @@ RUN chmod -R ug+rw /home/$NB_USER
 
 USER $NB_UID
 
+
 ENV SENZING_ROOT=/opt/senzing
 ENV PYTHONPATH=${SENZING_ROOT}/g2/python
-ENV LD_LIBRARY_PATH=${SENZING_ROOT}/g2/lib:${SENZING_ROOT}/g2/lib/debian
+ENV LD_LIBRARY_PATH=${SENZING_ROOT}/g2/lib:${SENZING_ROOT}/g2/lib/debian:${SENZING_ROOT}/db2/clidriver/lib
 ENV DB2_CLI_DRIVER_INSTALL_PATH=${SENZING_ROOT}/db2/clidriver
 ENV PATH=$PATH:${SENZING_ROOT}/db2/clidriver/adm:${SENZING_ROOT}/db2/clidriver/bin
 

@@ -49,6 +49,19 @@ if [ -n "${SENZING_ENTRYPOINT_SLEEP}" ]; then
   fi
 fi
 
+
+# Untar their own downloaded Senzing api!
+
+mkdir -p /opt/senzing/db2
+
+tar -xzf /artifacts/Senzing_API.tgz --directory /opt/senzing
+
+tar -xzf /downloads/ibm_data_server_driver_for_odbc_cli_linuxx64_v11.1.tar.gz --directory /opt/senzing/db2
+
+cp /artifacts/g2.lic /opt/senzing/g2/data/.
+cp /artifacts/g2config.json /opt/senzing/g2/.
+
+
 # Short-circuit if SENZING_DATABASE_URL not specified.
 
 if [ -z "${SENZING_DATABASE_URL}" ]; then
