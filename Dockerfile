@@ -56,6 +56,7 @@ RUN conda create -n ipykernel_py2 python=2 ipykernel
 
 RUN conda install -n ipykernel_py2 -y \
       bokeh \
+      fuzzywuzzy \
       ipykernel \
       ipython \
       networkx \
@@ -63,7 +64,9 @@ RUN conda install -n ipykernel_py2 -y \
       pandas \
       plotly \
       psutil \
+      ptable \
       pyodbc \
+      python-Levenshtein \
       qgrid \
       seaborn \
       sympy \
