@@ -98,6 +98,10 @@ RUN npm i -g npm
 ## Prepare user home dir
 #############################################
 
+# Copy and expand Senzing_API.tgz
+
+ADD artifacts/Senzing_API.tgz /opt/senzing
+
 # Copy files from repository.
 
 COPY ./rootfs /
