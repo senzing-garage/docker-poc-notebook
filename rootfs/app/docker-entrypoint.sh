@@ -59,7 +59,7 @@ tar -xzf /artifacts/Senzing_API.tgz --directory /opt/senzing
 tar -xzf /downloads/ibm_data_server_driver_for_odbc_cli_linuxx64_v11.1.tar.gz --directory /opt/senzing/db2
 
 cp /artifacts/g2.lic /opt/senzing/g2/data/.
-cp /artifacts/g2config.json /opt/senzing/g2/.
+cp /artifacts/g2config.json /opt/senzing/g2/python/.
 
 
 # Short-circuit if SENZING_DATABASE_URL not specified.
