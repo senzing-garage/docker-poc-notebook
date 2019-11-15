@@ -4,10 +4,13 @@
 ARG BASE_IMAGE=jupyter/minimal-notebook
 FROM ${BASE_IMAGE}
 
-ENV REFRESHED_AT=2019-04-09
+ENV REFRESHED_AT=2019-08-31
 
 LABEL Name="senzing/poc-notebook" \
+      Maintainer="support@senzing.com" \
       Version="1.0.0"
+
+HEALTHCHECK CMD ["/app/healthcheck.sh"]
 
 #############################################
 ## OS infrastructure
