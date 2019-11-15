@@ -16,7 +16,6 @@ There is more information on the
     1. [Space](#space)
     1. [Time](#time)
     1. [Background knowledge](#background-knowledge)
-1. [Quick starts](#quick-starts)
 1. [Demonstrate using Docker](#demonstrate-using-docker)
     1. [Initialize Senzing](#initialize-senzing)
     1. [Configuration](#configuration)
@@ -49,10 +48,6 @@ This repository assumes a working knowledge of:
 
 1. [Jupyter](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/jupyter.md)
 1. [Docker](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/docker.md)
-
-## Quick starts
-
-1. [Simplified instructions for macOS](docs/simplified-instructions-for-macos.md)
 
 ## Demonstrate using Docker
 
