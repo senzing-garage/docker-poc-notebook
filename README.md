@@ -1,4 +1,4 @@
-# docker-jupyter
+# docker-poc-notebook
 
 ## Overview
 
