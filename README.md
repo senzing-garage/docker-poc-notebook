@@ -96,7 +96,7 @@ Non-Senzing configuration can be seen at
 
         ```console
         cat ${SENZING_VOLUME}/g2/g2BuildVersion.json
-        cat ${SENZING_VOLUME}/data/1.0.0/libpostal/data_version
+        cat ${SENZING_VOLUME}/data/2.0.0/libpostal/data_version
         ```
 
     1. :warning:
@@ -110,12 +110,12 @@ Non-Senzing configuration can be seen at
    Example:
 
     ```console
-    export SENZING_DATA_VERSION_DIR=${SENZING_VOLUME}/data/1.0.0
+    export SENZING_DATA_VERSION_DIR=${SENZING_VOLUME}/data/2.0.0
     export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     ```
-    
+
 ### Docker network
 
 :thinking: **Optional:**  Use if docker container is part of a docker network.
