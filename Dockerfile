@@ -34,9 +34,9 @@ RUN apt-get -y install \
       lsb-release \
       odbc-postgresql \
       postgresql-client \
-      python-dev \
-      python-pip \
-      python-pyodbc \
+      python3-dev \
+      python3-pip \
+      python3-pyodbc \
       sqlite \
       unixodbc \
       unixodbc-dev \
