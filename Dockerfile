@@ -1,14 +1,18 @@
 # User can select the base image.
 # For BASE_IMAGE choices, see https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html
 
-ARG BASE_IMAGE=jupyter/minimal-notebook
+ARG BASE_IMAGE=jupyter/minimal-notebook:ubuntu-20.04@sha256:2d53044baa4ea352a1a22ab5866c093c0b2df73c8d5bcda3ee205d5abbbe592b
 FROM ${BASE_IMAGE}
 
-ENV REFRESHED_AT=2019-08-31
+ENV REFRESHED_AT=2022-07-14
 
 LABEL Name="senzing/poc-notebook" \
       Maintainer="support@senzing.com" \
-      Version="1.0.0"
+      Version="3.0.0"
+
+ARG SENZING_ACCEPT_EULA="I_ACCEPT_THE_SENZING_EULA"
+ARG SENZING_APT_INSTALL_PACKAGE="senzingapi-runtime=3.1.2-22193"
+ARG SENZING_APT_REPOSITORY_URL="https://senzing-production-apt.s3.amazonaws.com/senzingrepo_1.0.0-1_amd64.deb"
 
 HEALTHCHECK CMD ["/app/healthcheck.sh"]
 
@@ -28,20 +32,32 @@ RUN apt -y autoremove
 
 RUN apt-get -y install \
       curl \
+      default-jdk \
       gnupg \
       jq \
       lsb-core \
       lsb-release \
       odbc-postgresql \
       postgresql-client \
-      python3-dev \
-      python3-pip \
-      python3-pyodbc \
+      python-dev \
       sqlite \
       unixodbc \
       unixodbc-dev \
       wget \
  && rm -rf /var/lib/apt/lists/*
+
+# Install Senzing repository index.
+
+RUN curl \
+      --output /senzingrepo_1.0.0-1_amd64.deb \
+      ${SENZING_APT_REPOSITORY_URL} \
+ && apt -y install \
+      /senzingrepo_1.0.0-1_amd64.deb \
+ && apt update
+
+# Install Senzing package.
+
+RUN apt -y install ${SENZING_APT_INSTALL_PACKAGE}
 
 #############################################
 ## Python infrastructure
@@ -53,11 +69,11 @@ RUN conda update -y -n base conda
 
 # Python 2.
 
-RUN conda create -n ipykernel_py2 python=2 ipykernel
+RUN conda create -n ipykernel_py3 python=3 ipykernel
 
 # Python libraries for python 2.7.
 
-RUN conda install -n ipykernel_py2 -y \
+RUN conda install -n ipykernel_py3 -y \
       bokeh \
       fuzzywuzzy \
       ipykernel \
@@ -77,22 +93,32 @@ RUN conda install -n ipykernel_py2 -y \
 
 # Install notebook widgets.
 
-RUN conda install -n ipykernel_py2 -c conda-forge -y \
+RUN conda install -n ipykernel_py3 -c conda-forge -y \
       widgetsnbextension \
       ipywidgets
 
 # Install jupyter widgets for qgrid.
 
-RUN conda run -n ipykernel_py2 jupyter labextension install @jupyter-widgets/jupyterlab-manager
+RUN conda run -n ipykernel_py3 jupyter labextension install @jupyter-widgets/jupyterlab-manager
 
 # Enable qgrid inside jupyter notebooks.
 
-RUN conda run -n ipykernel_py2 jupyter labextension install qgrid
+RUN conda install qgrid
 
 # Install python 2.7 kernel for users.
 
-RUN conda run -n ipykernel_py2 python -m ipykernel install --user
+RUN conda run -n ipykernel_py3 python -m ipykernel install --user
 
+# Install Java kernel
+
+RUN curl -L https://github.com/SpencerPark/IJava/releases/download/v1.3.0/ijava-1.3.0.zip > ijava-kernel.zip \
+ && unzip ijava-kernel.zip -d ijava-kernel \
+ && cd ijava-kernel \
+ && python3 install.py --sys-prefix
+
+# Update notebook
+
+RUN pip3 install --upgrade ipykernel --user
 # Update nodeJS.
 
 RUN npm i -g npm
@@ -102,8 +128,6 @@ RUN npm i -g npm
 #############################################
 
 # Copy files from repository.
-
-env BOB=8
 
 COPY ./rootfs /
 COPY ./downloads /downloads
@@ -119,6 +143,13 @@ RUN chmod -R ug+rw /downloads
 RUN chown -R $NB_UID:$NB_GID /home/$NB_USER
 RUN chmod -R ug+rw /home/$NB_USER
 
+# Install nbextensions
+RUN conda install -c conda-forge jupyter_contrib_nbextensions
+RUN jupyter contrib nbextension install --system
+RUN jupyter nbextension enable toc2/main --system \
+ && jupyter nbextension enable collapsible_headings/main --system
+
+
 #############################################
 ## User environment setting
 #############################################
@@ -128,11 +159,12 @@ RUN chmod -R ug+rw /home/$NB_USER
 
 USER $NB_UID
 
-
 ENV SENZING_ROOT=/opt/senzing
-ENV PYTHONPATH=${SENZING_ROOT}/g2/python
-ENV LD_LIBRARY_PATH=${SENZING_ROOT}/g2/lib:${SENZING_ROOT}/g2/lib/debian:${SENZING_ROOT}/db2/clidriver/lib
+ENV PYTHONPATH=${SENZING_ROOT}/g2/sdk/python
+ENV LD_LIBRARY_PATH=${SENZING_ROOT}/g2/lib:${SENZING_ROOT}/g2/lib/debian
 ENV DB2_CLI_DRIVER_INSTALL_PATH=${SENZING_ROOT}/db2/clidriver
 ENV PATH=$PATH:${SENZING_ROOT}/db2/clidriver/adm:${SENZING_ROOT}/db2/clidriver/bin
+ENV IJAVA_CLASSPATH=/opt/senzing/g2/lib/g2.jar
+ENV DYLD_LIBRARY_PATH=/opt/senzing/g2/lib/
 
 WORKDIR /notebooks
