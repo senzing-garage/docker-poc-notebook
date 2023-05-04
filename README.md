@@ -59,11 +59,6 @@ This repository assumes a working knowledge of:
 
 ## Demonstrate using Docker
 
-### Initialize Senzing
-
-1. If Senzing has not been initialized, visit
-   "[How to initialize Senzing with Docker](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/initialize-senzing-with-docker.md)".
-
 ### Configuration
 
 Configuration values specified by environment variable or command line parameter.
@@ -72,9 +67,6 @@ Non-Senzing configuration can be seen at
 [Jupyter Docker Stacks](https://jupyter-docker-stacks.readthedocs.io/en/latest/index.html)
 
 - **[JUPYTER_NOTEBOOKS_SHARED_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#jupyter_notebooks_shared_dir)**
-- **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_data_version_dir)**
-- **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_etc_dir)**
-- **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_g2_dir)**
 - **[SENZING_NETWORK](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_network)**
 - **[SENZING_RUNAS_USER](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_runas_user)**
 - **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_var_dir)**
@@ -110,9 +102,6 @@ Non-Senzing configuration can be seen at
    Example:
 
     ```console
-    export SENZING_DATA_VERSION_DIR=${SENZING_VOLUME}/data/3.0.0
-    export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
-    export SENZING_G2_DIR=${SENZING_VOLUME}/g2
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     ```
 
@@ -182,9 +171,6 @@ For other databases, these steps may be skipped.
       --rm \
       --tty \
       --volume ${JUPYTER_NOTEBOOKS_SHARED_DIR}:/notebooks/shared \
-      --volume ${SENZING_DATA_VERSION_DIR}:/opt/senzing/data \
-      --volume ${SENZING_ETC_DIR}:/etc/opt/senzing \
-      --volume ${SENZING_G2_DIR}:/opt/senzing/g2 \
       --volume ${SENZING_VAR_DIR}:/var/opt/senzing \
       ${SENZING_NETWORK_PARAMETER} \
       ${SENZING_OPT_IBM_DIR_PARAMETER} \
@@ -218,9 +204,9 @@ For other databases, these steps may be skipped.
 
 The following software programs need to be installed:
 
-1. [git](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-git.md)
-1. [make](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-make.md)
-1. [docker](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-docker.md)
+1. [git](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/git.md)
+1. [make](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/make.md)
+1. [docker](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/docker.md)
 
 ### Clone repository
 
