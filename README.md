@@ -1,5 +1,11 @@
 # docker-poc-notebook
 
+## :no_entry: Deprecated
+
+This pilot project has been abandoned. There is no successor.
+
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
 ## Overview
 
 The `senzing/poc-notebook` docker image is a Senzing-ready, [jupyter](https://jupyter.org/) notebook for showing POC results.
